@@ -145,12 +145,12 @@ button:hover,
 }
 
 /* dev.to */
-.button.button-dev-to {
+.button.button-dev_to {
   color: #000000;
   background-color: #f5f5f5;
 }
-.button.button-dev-to:hover,
-.button.button-dev-to:focus {
+.button.button-dev_to:hover,
+.button.button-dev_to:focus {
   filter: brightness(90%);
 }
 
