@@ -290,7 +290,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <a class="button button-amazon" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/amazon.svg" alt="Amazon Logo">Amazon</a>
         <br>
-                
+
         <!-- Venmo -->
         <a class="button button-venmo" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/venmo.svg" alt="Venmo Logo">Venmo</a>
@@ -357,7 +357,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <br>
-        <!-- 
+        <!--
             Footer:
             This includes a link to privacy.html page which can be setup for your Privacy Policy.
             This also includes a link to the LittleLink repository to make forking LittleLink easier.
@@ -382,8 +382,15 @@ function links(linkItems: LinkItem[]): string {
     let parts: string[] = [];
     for (let i = 0; i < linkItems.length; i++) {
         let link = linkItems[i];
+        let buttonClass = link.type;
+        if (link.type.startsWith('cashapp_')) {
+            buttonClass = 'cashapp';
+        }
+        if (['email', 'email_alt', 'blog', 'littlelink'].includes(link.type)) {
+            buttonClass = 'default';
+        }
         parts.push(`
-            <a class="button button-${link.type}" href="${link.href}" target="_blank" rel="noopener">
+            <a class="button button-${buttonClass}" href="${link.href}" target="_blank" rel="noopener">
                 <img class="icon" src="images/icons/${link.type}.svg">${link.text}</a>
             <br>
         `);
