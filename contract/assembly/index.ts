@@ -1,6 +1,6 @@
 
 import { context, logging, storage, util } from 'near-sdk-as'
-import { littlelink } from './littlelink';
+import { LinksConfig, littlelink } from './littlelink';
 import { bodyUrl, htmlResponse, status, Web4Request, Web4Response } from './web4';
 
 function assertOwner(): void {
@@ -8,7 +8,15 @@ function assertOwner(): void {
     assert(context.sender == context.contractName);
 }
 
+
 const WEB4_STATIC_URL_KEY = 'web4:staticUrl';
+const LINKS_CONFIG_KEY = 'config';
+
+export function setConfig(config: LinksConfig): void {
+    assertOwner();
+
+    storage.set(LINKS_CONFIG_KEY, config);
+}
 
 // Updates current static content URL in smart contract storage
 export function web4_setStaticUrl(url: string): void {
@@ -19,15 +27,7 @@ export function web4_setStaticUrl(url: string): void {
 
 export function web4_get(request: Web4Request): Web4Response {
     if (request.path == "/") {
-        return htmlResponse(littlelink({
-            name: "This is my name",
-            bio: 'Wow so <b>web4</b>!',
-            links: [
-                { type: 'github', text: 'Web4 GitHub', href: 'https://github.com/vgrichina/web4' },
-                { type: 'cashapp_btc', text: 'CashApp Test BTC', href: '#' },
-                { type: 'email', text: 'My Email', href: '#' },
-            ]
-        }));
+        return htmlResponse(littlelink(storage.getSome<LinksConfig>(LINKS_CONFIG_KEY)));
     }
 
     // Serve stylesheets and images from ipfs for now

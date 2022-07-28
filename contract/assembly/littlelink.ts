@@ -1,9 +1,11 @@
+@nearBindgen
 export class LinksConfig {
     name: string;
     bio: string;
-    links: LinkItem[];
+    links: LinkItem[] = [];
 }
 
+@nearBindgen
 export class LinkItem {
     type: string;
     text: string;
