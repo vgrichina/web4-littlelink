@@ -18,11 +18,11 @@ export function web4_setStaticUrl(url: string): void {
 
 export function web4_get(request: Web4Request): Web4Response {
     if (request.path == "/") {
-        return htmlResponse('Hello, World!');
+        return bodyUrl(`${storage.getString(WEB4_STATIC_URL_KEY)!}/index.html`);
     }
 
     // Serve stylesheets from ipfs for now
-    if (request.path.endsWith('.css')) {
+    if (request.path.endsWith('.css') || request.path.endsWith('.svg') || request.path.endsWith('.png')) {
         return bodyUrl(`${storage.getString(WEB4_STATIC_URL_KEY)!}${request.path}`);
     }
 
