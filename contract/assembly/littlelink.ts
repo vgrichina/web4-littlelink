@@ -379,5 +379,14 @@ export function littlelink(linkItems: LinkItem[]): string {
 
 
 function links(linkItems: LinkItem[]): string {
-    return '';
+    let parts: string[] = [];
+    for (let i = 0; i < linkItems.length; i++) {
+        let link = linkItems[i];
+        parts.push(`
+            <a class="button button-${link.type}" href="${link.href}" target="_blank" rel="noopener">
+                <img class="icon" src="images/icons/${link.type}.svg">${link.text}</a>
+            <br>
+        `);
+    }
+    return parts.join('\n');
 }

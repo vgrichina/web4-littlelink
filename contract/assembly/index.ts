@@ -19,10 +19,12 @@ export function web4_setStaticUrl(url: string): void {
 
 export function web4_get(request: Web4Request): Web4Response {
     if (request.path == "/") {
-        return htmlResponse(littlelink([]));
+        return htmlResponse(littlelink([
+            { type: 'github', text: 'Web4 GitHub', href: 'https://github.com/vgrichina/web4' },
+        ]));
     }
 
-    // Serve stylesheets from ipfs for now
+    // Serve stylesheets and images from ipfs for now
     if (request.path.endsWith('.css') || request.path.endsWith('.svg') || request.path.endsWith('.png')) {
         return bodyUrl(`${storage.getString(WEB4_STATIC_URL_KEY)!}${request.path}`);
     }
