@@ -21,6 +21,8 @@ export function web4_get(request: Web4Request): Web4Response {
     if (request.path == "/") {
         return htmlResponse(littlelink([
             { type: 'github', text: 'Web4 GitHub', href: 'https://github.com/vgrichina/web4' },
+            { type: 'cashapp_btc', text: 'CashApp Test BTC', href: '#' },
+            { type: 'email', text: 'My Email', href: '#' },
         ]));
     }
 
