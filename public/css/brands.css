@@ -175,12 +175,12 @@ button:hover,
 }
 
 /* Facebook */
-.button.button-faceb {
+.button.button-facebook {
   color: #ffffff;
   background-color: #1877f2;
 }
-.button.button-faceb:hover,
-.button.button-faceb:focus {
+.button.button-facebook:hover,
+.button.button-facebook:focus {
   filter: brightness(90%);
 }
 
@@ -499,12 +499,12 @@ button:hover,
 }
 
 /* Tumblr */
-.button.button-tumb {
+.button.button-tumblr {
   color: #ffffff;
   background-color: #131313;
 }
-.button.button-tumb:hover,
-.button.button-tumb:focus {
+.button.button-tumblr:hover,
+.button.button-tumblr:focus {
   filter: brightness(90%);
 }
 
@@ -519,12 +519,12 @@ button:hover,
 }
 
 /* Twitter */
-.button.button-twit {
+.button.button-twitter {
   color: #ffffff;
   background-color: #1da1f2;
 }
-.button.button-twit:hover,
-.button.button-twit:focus {
+.button.button-twitter:hover,
+.button.button-twitter:focus {
   filter: brightness(90%);
 }
 
@@ -600,12 +600,12 @@ button:hover,
 }
 
 /* YouTube */
-.button.button-yt {
+.button.button-youtube {
   color: #ffffff;
   background-color: #000000;
 }
-.button.button-yt:hover,
-.button.button-yt:focus {
+.button.button-youtube:hover,
+.button.button-youtube:focus {
   filter: brightness(90%);
 }
 

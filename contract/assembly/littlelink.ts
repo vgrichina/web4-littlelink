@@ -72,7 +72,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <!-- Twitter -->
-        <a class="button button-twit" href="#" target="_blank" rel="noopener">
+        <a class="button button-twitter" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/twitter.svg" alt="Twitter Logo">Twitter</a>
         <br>
 
@@ -82,7 +82,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <!-- Facebook -->
-        <a class="button button-faceb" href="#" target="_blank" rel="noopener">
+        <a class="button button-facebook" href="#" target="_blank" rel="noopener">
             <img class="icon"src="images/icons/facebook.svg" alt="Facebook Logo">Find us on Facebook</a>
         <br>
 
@@ -97,7 +97,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <!-- YouTube -->
-        <a class="button button-yt" href="#" target="_blank" rel="noopener">
+        <a class="button button-youtube" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/youtube.svg" alt="YouTube Logo">YouTube</a>
         <br>
 
@@ -212,7 +212,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <!-- Tumblr -->
-        <a class="button button-tumb" href="#" target="_blank" rel="noopener">
+        <a class="button button-tumblr" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/tumblr.svg" alt="Tumblr Logo">Tumblr</a>
         <br>
 
@@ -312,7 +312,7 @@ export function littlelink(linkItems: LinkItem[]): string {
         <br>
 
         <!-- dev.to -->
-        <a class="button button-dev-to" href="#" target="_blank" rel="noopener">
+        <a class="button button-dev_to" href="#" target="_blank" rel="noopener">
             <img class="icon" src="images/icons/dev_to.svg" alt="dev.to Logo">dev.to</a>
         <br>
 
