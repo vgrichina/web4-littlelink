@@ -19,11 +19,15 @@ export function web4_setStaticUrl(url: string): void {
 
 export function web4_get(request: Web4Request): Web4Response {
     if (request.path == "/") {
-        return htmlResponse(littlelink([
-            { type: 'github', text: 'Web4 GitHub', href: 'https://github.com/vgrichina/web4' },
-            { type: 'cashapp_btc', text: 'CashApp Test BTC', href: '#' },
-            { type: 'email', text: 'My Email', href: '#' },
-        ]));
+        return htmlResponse(littlelink({
+            name: "This is my name",
+            bio: 'Wow so <b>web4</b>!',
+            links: [
+                { type: 'github', text: 'Web4 GitHub', href: 'https://github.com/vgrichina/web4' },
+                { type: 'cashapp_btc', text: 'CashApp Test BTC', href: '#' },
+                { type: 'email', text: 'My Email', href: '#' },
+            ]
+        }));
     }
 
     // Serve stylesheets and images from ipfs for now
