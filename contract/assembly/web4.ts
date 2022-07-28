@@ -13,6 +13,7 @@ export class Web4Request {
 @nearBindgen
 export class Web4Response {
     contentType: string;
+    status: u32;
     body: Uint8Array;
     bodyUrl: string;
     preloadUrls: string[] = [];
@@ -94,4 +95,8 @@ export function preloadUrls(urls: string[]): Web4Response {
 
 export function bodyUrl(url: string): Web4Response {
     return { bodyUrl: url };
+}
+
+export function status(status: u32): Web4Response {
+    return { status };
 }

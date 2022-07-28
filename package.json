@@ -1,11 +1,7 @@
 {
-  "name": "web4-near",
+  "name": "web4-littlelink",
   "version": "0.0.1",
-  "description": "Web3 using plain HTTP",
-  "bin": {
-      "web4": "bin/web4"
-  },
-  "main": "app.js",
+  "description": "Self-hosted Linktree alternative to use with web4",
   "license": "MIT",
   "scripts": {
     "build": "npm run build:contract",
@@ -17,20 +13,15 @@
     "deploy:website": "npm run build:website && npx web4-deploy dist/ web4.near",
     "deploy": "npm run build:contract && npm run deploy:contract",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
-    "start": "env-cmd -f ./neardev/dev-account.env nodemon bin/web4 --watch . -e js",
+    "start": "env-cmd -f ./neardev/dev-account.env web4",
     "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
     "test": "npm run build:contract:debug && node contract/test && jest test --runInBand"
   },
-  "dependencies": {
-    "koa": "^2.13.1",
-    "koa-body": "^4.2.0",
-    "koa-router": "^10.0.0",
-    "near-api-js": "^0.43.1",
-    "node-fetch": "^2.6.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "env-cmd": "^10.1.0",
     "marked": "^3.0.4",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "web4-near": "^0.1.0"
   }
 }
