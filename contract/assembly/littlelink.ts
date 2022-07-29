@@ -22,9 +22,9 @@ export function littlelink(config: LinksConfig): string {
   <!-- Page Information
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>LittleLink</title>
-  <meta name="description" content="Find us online!">
-  <meta name="author" content="Seth Cottle">
+  <title>${config.name}</title>
+  <meta name="description" content="${config.bio}">
+  <meta name="author" content="${config.name}">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
