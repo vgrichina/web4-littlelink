@@ -136,7 +136,9 @@ export function profileEdit(config: LinksConfig): string {
         <!-- Short Bio -->
         <p>${config.bio}</p>
 
-        ${linksEdit(config.links)}
+        <div class="container-left">
+            ${linksEdit(config.links)}
+        </div>
     `;
 }
 
