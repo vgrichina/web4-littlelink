@@ -12,7 +12,7 @@ export class LinkItem {
     href: string;
 }
 
-export function littlelink(config: LinksConfig): string {
+export function littlelink(config: LinksConfig, inner: string): string {
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -63,16 +63,7 @@ export function littlelink(config: LinksConfig): string {
     <div class="row">
       <div class="column" style="margin-top: 10%">
 
-        <!-- Your Image Here -->
-        <img src="images/avatar.png" class="avatar" srcset="images/avatar@2x.png 2x" alt="LittleLink Logo">
-
-        <!-- Title -->
-        <h1>${config.name}</h1>
-
-        <!-- Short Bio -->
-        <p>${config.bio}</p>
-
-        ${links(config.links)}
+        ${inner}
 
         <br>
         <!--
@@ -95,8 +86,24 @@ export function littlelink(config: LinksConfig): string {
     `;
 }
 
+// TODO: Use some util to escape HTML strings
 
-function links(linkItems: LinkItem[]): string {
+export function profile(config: LinksConfig): string {
+    return `
+        <!-- Your Image Here -->
+        <img src="images/avatar.png" class="avatar" srcset="images/avatar@2x.png 2x" alt="LittleLink Logo">
+
+        <!-- Title -->
+        <h1>${config.name}</h1>
+
+        <!-- Short Bio -->
+        <p>${config.bio}</p>
+
+        ${links(config.links)}
+    `;
+}
+
+export function links(linkItems: LinkItem[]): string {
     let parts: string[] = [];
     for (let i = 0; i < linkItems.length; i++) {
         let link = linkItems[i];
@@ -113,5 +120,52 @@ function links(linkItems: LinkItem[]): string {
             <br>
         `);
     }
+    return parts.join('\n');
+}
+
+export function profileEdit(config: LinksConfig): string {
+    // TODO: Edit stuff besides links
+    // TODO: Submit form
+    return `
+        <!-- Your Image Here -->
+        <img src="images/avatar.png" class="avatar" srcset="images/avatar@2x.png 2x" alt="LittleLink Logo">
+
+        <!-- Title -->
+        <h1>${config.name}</h1>
+
+        <!-- Short Bio -->
+        <p>${config.bio}</p>
+
+        ${linksEdit(config.links)}
+    `;
+}
+
+const LINK_TYPES = ['twitter', 'github'];
+function typeOptions(selectedType: string): string {
+    let parts: string[] = [];
+    for (let i = 0; i < LINK_TYPES.length; i++) {
+        const type = LINK_TYPES[i];
+        parts.push(`<option value="twitter" ${type == selectedType ? 'selected' : ''}>${type}</option>`);
+    }
+    return parts.join('\n');
+}
+
+export function linksEdit(linkItems: LinkItem[]): string {
+    let parts: string[] = [];
+    parts.push('<form>');
+    for (let i = 0; i < linkItems.length; i++) {
+        let link = linkItems[i];
+        // TODO: Have array of types
+        parts.push(`
+            <select class="u-full-width" name="type">
+                ${typeOptions(link.type)}
+            </select>
+            <label for="href">URL</label>
+            <input class="u-full-width" type="url" placeholder="http://twitter.com" name="href" value="${link.href}">
+            <label for="href">Text</label>
+            <input class="u-full-width" type="text" placeholder="Twitter" name="text" value="${link.text}">
+        `);
+    }
+    parts.push('</form>');
     return parts.join('\n');
 }
