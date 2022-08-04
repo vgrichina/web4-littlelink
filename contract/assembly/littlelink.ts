@@ -72,7 +72,7 @@ export function littlelink(config: LinksConfig, inner: string): string {
             This also includes a link to the LittleLink repository to make forking LittleLink easier.
             You can edit or remove anything here to make your own footer.
         -->
-        <p>Build your own by forking <a href="https://littlelink.io" target="_blank" rel="noopener">LittleLink</a>.</p>
+        <p>Build your own using <a href="https://github.com/vgrichina/web4-littlelink/" target="_blank" rel="noopener">web4-littlelink</a>.</p>
 
       </div>
     </div>
