@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npm run build:contract",
-    "build:website": "mkdir -p dist && marked -i README.md -o dist/index.html",
+    "build:website": "mkdir -p dist && cp -R public/* dist",
     "build:contract": "cd contract && npm run build:release",
     "build:contract:debug": "cd contract && npm run build:debug",
     "dev:deploy:contract": "near dev-deploy --wasmFile contract/build/debug/greeter.wasm",
