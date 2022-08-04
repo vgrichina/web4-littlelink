@@ -159,12 +159,13 @@ export function linksEdit(linkItems: LinkItem[]): string {
         let link = linkItems[i];
         // TODO: Have array of types
         parts.push(`
+            <label for="type">Type</label>
             <select class="u-full-width" name="type">
                 ${typeOptions(link.type)}
             </select>
             <label for="href">URL</label>
             <input class="u-full-width" type="url" placeholder="http://twitter.com" name="href" value="${link.href}">
-            <label for="href">Text</label>
+            <label for="text">Text</label>
             <input class="u-full-width" type="text" placeholder="Twitter" name="text" value="${link.text}">
         `);
     }
