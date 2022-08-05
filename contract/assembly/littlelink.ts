@@ -127,20 +127,19 @@ export function links(linkItems: LinkItem[]): string {
 }
 
 export function profileEdit(config: LinksConfig): string {
-    // TODO: Edit stuff besides links
-    // TODO: Submit form
     return `
-        <!-- Your Image Here -->
-        <img src="images/avatar.png" class="avatar" srcset="images/avatar@2x.png 2x" alt="LittleLink Logo">
-
-        <!-- Title -->
-        <h1>${config.name}</h1>
-
-        <!-- Short Bio -->
-        <p>${config.bio}</p>
-
         <div class="container-left">
+            <label for="name">Name</label>
+            <input class="u-full-width" type="text" placeholder="John Doe" name="name" value="${config.name}">
+
+            <label for="bio">Bio</label>
+            <textarea class="u-full-width" name="bio">${config.bio}</textarea>
+
+            <h2>Links</h2>
+
             ${linksEdit(config.links)}
+
+            <input class="button-primary" type="submit" value="Save">
         </div>
     `;
 }
@@ -176,7 +175,6 @@ export function linksEdit(linkItems: LinkItem[]): string {
             </div>
             <label for="href">URL</label>
             <input class="u-full-width" type="url" placeholder="http://twitter.com" name="href" value="${link.href}">
-            ${linkButton(link)}
         `);
     }
     parts.push('</form>');
