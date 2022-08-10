@@ -10,7 +10,7 @@
     "build:contract:debug": "cd contract && yarn && npm run build:debug",
     "dev:deploy:contract": "near dev-deploy --wasmFile contract/build/debug/greeter.wasm",
     "deploy:contract": "near deploy --wasmFile contract/build/release/greeter.wasm $CONTRACT_NAME",
-    "deploy:website": "npm run build:website && npx web4-deploy dist/ $CONTRACT_NAME",
+    "deploy:website": "npm run build:website && yarn web4-deploy dist/ $CONTRACT_NAME",
     "deploy": "npm run build:contract && npm run deploy:contract",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "env-cmd -f ./neardev/dev-account.env web4",
