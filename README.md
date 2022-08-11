@@ -23,6 +23,11 @@ cd web4-littlelink
 yarn
 ```
 
+### Create web4 subaccount
+```bash
+NODE_ENV=mainnet near create-account web4.target-account.near --masterAccount target-account.near --initialBalance 0.5
+```
+
 ### Deploy smart contract
 
 ```bash
