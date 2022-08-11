@@ -6,23 +6,26 @@
   "scripts": {
     "build": "npm run build:contract",
     "build:website": "mkdir -p dist && cp -R public/* dist",
-    "build:contract": "cd contract && npm run build:release",
-    "build:contract:debug": "cd contract && npm run build:debug",
-    "dev:deploy:contract": "near dev-deploy --wasmFile contract/build/debug/greeter.wasm",
-    "deploy:contract": "near deploy --wasmFile contract/build/release/greeter.wasm $CONTRACT_NAME",
+    "build:contract": "asb --verbose --target release",
+    "build:contract:debug": "asb --verbose --target debug",
+    "dev:deploy:contract": "near dev-deploy --wasmFile build/debug/web4-littlelink.wasm",
+    "deploy:contract": "near deploy --wasmFile build/release/web4-littlelink.wasm $CONTRACT_NAME",
     "deploy:website": "npm run build:website && web4-deploy dist/ $CONTRACT_NAME",
     "deploy": "npm run build:contract && npm run deploy:contract",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
-    "start": "env-cmd -f ./neardev/dev-account.env web4",
-    "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
-    "test": "npm run build:contract:debug && node contract/test && jest test --runInBand"
+    "web4:start": "npm run deploy:website && web4",
+    "start": "env-cmd -f ./neardev/dev-account.env npm run web4:start",
+    "dev": "nodemon --watch assembly -e ts --exec \"npm run start\"",
+    "test": "npm run build:contract:debug"
   },
   "dependencies": {},
   "devDependencies": {
+    "asbuild": "^0.2.0",
     "env-cmd": "^10.1.0",
     "marked": "^3.0.4",
+    "near-sdk-as": "^3.2.3",
     "nodemon": "^2.0.7",
-    "web4-deploy": "^0.0.3",
-    "web4-near": "^0.1.0"
+    "web4-deploy": "^0.0.4",
+    "web4-near": "^0.2.1"
   }
 }
