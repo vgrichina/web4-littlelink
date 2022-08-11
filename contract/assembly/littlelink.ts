@@ -1,3 +1,5 @@
+import { Context } from "near-sdk-as";
+
 @nearBindgen
 export class LinksConfig {
     name: string;
@@ -129,17 +131,19 @@ export function links(linkItems: LinkItem[]): string {
 export function profileEdit(config: LinksConfig): string {
     return `
         <div class="container-left">
-            <label for="name">Name</label>
-            <input class="u-full-width" type="text" placeholder="John Doe" name="name" value="${config.name}">
+            <form method="POST" action="/web4/contract/${Context.contractName}/setConfig">
+                <label for="name">Name</label>
+                <input class="u-full-width" type="text" placeholder="John Doe" name="name" value="${config.name}">
 
-            <label for="bio">Bio</label>
-            <textarea class="u-full-width" name="bio">${config.bio}</textarea>
+                <label for="bio">Bio</label>
+                <textarea class="u-full-width" name="bio">${config.bio}</textarea>
 
-            <h2>Links</h2>
+                <h2>Links</h2>
 
-            ${linksEdit(config.links)}
+                ${linksEdit(config.links)}
 
-            <input class="button-primary" type="submit" value="Save">
+                <input class="button-primary" type="submit" value="Save">
+            </form>
         </div>
     `;
 }
@@ -156,27 +160,25 @@ function typeOptions(selectedType: string): string {
 
 export function linksEdit(linkItems: LinkItem[]): string {
     let parts: string[] = [];
-    parts.push('<form>');
     for (let i = 0; i < linkItems.length; i++) {
         let link = linkItems[i];
         // TODO: Have array of types
         parts.push(`
             <div class="row">
                 <div class="six columns">
-                    <label for="type">Type</label>
-                    <select class="u-full-width" name="type">
+                    <label>Type</label>
+                    <select class="u-full-width" name="links[${i}].type">
                         ${typeOptions(link.type)}
                     </select>
                 </div>
                 <div class="six columns">
-                    <label for="text">Text</label>
-                    <input class="u-full-width" type="text" placeholder="Twitter" name="text" value="${link.text}">
+                    <label>Text</label>
+                    <input class="u-full-width" type="text" placeholder="Twitter" name="links[${i}].text" value="${link.text}">
                 </div>
             </div>
-            <label for="href">URL</label>
-            <input class="u-full-width" type="url" placeholder="http://twitter.com" name="href" value="${link.href}">
+            <label>URL</label>
+            <input class="u-full-width" type="url" placeholder="http://twitter.com" name="links[${i}].href" value="${link.href}">
         `);
     }
-    parts.push('</form>');
     return parts.join('\n');
 }
