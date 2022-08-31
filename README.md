@@ -50,4 +50,7 @@ NODE_ENV=mainnet near call web4.target-account.near setConfig \
     ]}}' --accountId  web4.target-account.near
 ```
 
+## Attribution
+
+Based on [LittleLink](https://littlelink.io). See `LICENSE.littlelink.md`.
 
