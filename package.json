@@ -11,7 +11,7 @@
     "dev:deploy:contract": "near dev-deploy --wasmFile build/debug/web4-littlelink.wasm",
     "deploy:contract": "near deploy --wasmFile build/release/web4-littlelink.wasm $CONTRACT_NAME",
     "deploy:website": "npm run build:website && web4-deploy dist/ $CONTRACT_NAME",
-    "deploy": "npm run build:contract && npm run deploy:contract",
+    "deploy": "npm run build:contract && npm run deploy:contract && npm run deploy:website",
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "web4:start": "npm run deploy:website && web4",
     "start": "env-cmd -f ./neardev/dev-account.env npm run web4:start",
