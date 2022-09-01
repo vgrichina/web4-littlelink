@@ -14,7 +14,7 @@ export class LinkItem {
     href: string;
 }
 
-export function littlelink(config: LinksConfig, inner: string): string {
+export function skeleton(head: string, inner: string): string {
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -24,9 +24,6 @@ export function littlelink(config: LinksConfig, inner: string): string {
   <!-- Page Information
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>${config.name}</title>
-  <meta name="description" content="${config.bio}">
-  <meta name="author" content="${config.name}">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -55,6 +52,7 @@ export function littlelink(config: LinksConfig, inner: string): string {
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/avatar.png">
 
+  ${head}
 </head>
 
 <body>
@@ -64,18 +62,7 @@ export function littlelink(config: LinksConfig, inner: string): string {
   <div class="container">
     <div class="row">
       <div class="column" style="margin-top: 10%">
-
         ${inner}
-
-        <br>
-        <!--
-            Footer:
-            This includes a link to privacy.html page which can be setup for your Privacy Policy.
-            This also includes a link to the LittleLink repository to make forking LittleLink easier.
-            You can edit or remove anything here to make your own footer.
-        -->
-        <p>Build your own using <a href="https://github.com/vgrichina/web4-littlelink/" target="_blank" rel="noopener">web4-littlelink</a>.</p>
-
       </div>
     </div>
   </div>
@@ -86,6 +73,20 @@ export function littlelink(config: LinksConfig, inner: string): string {
 
 </html>
     `;
+
+}
+
+export function littlelink(config: LinksConfig, inner: string): string {
+    return skeleton(`
+        <title>${config.name}</title>
+        <meta name="description" content="${config.bio}">
+        <meta name="author" content="${config.name}">
+    `, `
+        ${inner}
+
+        <br>
+        <p>Build your own using <a href="https://github.com/vgrichina/web4-littlelink/" target="_blank" rel="noopener">web4-littlelink</a>.</p>
+    `);
 }
 
 // TODO: Use some util to escape HTML strings
