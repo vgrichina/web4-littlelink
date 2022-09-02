@@ -65,7 +65,7 @@ export function web4_get(request: Web4Request): Web4Response {
     if (request.path == '/deploy') {
         return htmlResponse(skeleton(`
             <title>Deploy your own LittleLink</title>
-        `, deployView()));
+        `, deployView(request.accountId)));
     }
 
     // Serve stylesheets and images from ipfs for now
