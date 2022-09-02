@@ -53,7 +53,7 @@ async function submitDeployFormAsync({ accountId }) {
 
     if (keyResponse.status === 404) {
         // Acccount exists but doesn't have access key
-        // TODO: Report message to user? Add key through wallet if possible?
+    // TODO: Report message to user? Add key through wallet if possible?
         throw new Error(`Account ${accountId} exists but doesn't have access key`);
     }
 
@@ -61,19 +61,29 @@ async function submitDeployFormAsync({ accountId }) {
         throw new Error(`Unexpected status code ${keyResponse.status}`);
     }
 
-    const nonce = (await keyResponse.json()).nonce;
+    const nonce = parseInt((await keyResponse.json()).nonce) + 1;
     const blockHash = base_decode((await (await fetch(`${FAST_NEAR_URL}/status`)).json()).sync_info.latest_block_hash);
+    const staticUrl = await (await fetch(`${FAST_NEAR_URL}/account/${CONTRACT_NAME}/view/web4_getStaticUrl`)).json();
 
     // Create transaction to deploy contract
     const transaction = new Transaction({
         signerId: contractId,
-        publicKey: new PublicKey({ type: 0, data: Buffer.from(new Array(32))}),
+        publicKey: keyPair.publicKey,
         nonce,
         blockHash,
         receiverId: contractId,
         actions: [
             deployContract(contractWasm),
             functionCall('setOwner', { accountId }, 10000000000000, '0'),
+            functionCall('web4_setStaticUrl', { url: staticUrl }, 10000000000000, '0'),
+            functionCall('setConfig', { config: {
+                name: accountId,
+                bio: '',
+                links: [
+                    { type: 'twitter' },
+                    { type: 'github' }
+                ]
+            } }, 10000000000000, '0'),
         ]
     });
 

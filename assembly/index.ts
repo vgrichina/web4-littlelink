@@ -47,6 +47,10 @@ export function web4_setStaticUrl(url: string): void {
     storage.set(WEB4_STATIC_URL_KEY, url);
 }
 
+export function web4_getStaticUrl(): string | null {
+    return storage.get<string>(WEB4_STATIC_URL_KEY);
+}
+
 export function web4_get(request: Web4Request): Web4Response {
     if (request.path == '/') {
         let config = storage.getSome<LinksConfig>(LINKS_CONFIG_KEY);
