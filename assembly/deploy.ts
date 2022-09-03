@@ -15,6 +15,14 @@ export function deployView(accountId: string | null): string {
             const CONTRACT_NAME = '${Context.contractName}';
         </script>
         <script src="./deploy.js"></script>
+        <style type="text/css">
+            .deploy-step {
+                display: none;
+            }
+            .deploy-step.active {
+                display: block;
+            }
+        </style>
         <div class="container-left">
             <h1>Setup your own</h1>
             ${!accountId 
@@ -22,9 +30,20 @@ export function deployView(accountId: string | null): string {
                 : ` <form method="POST" onsubmit="submitDeployForm(event)">
                         <label for="accountId">Account ID</label>
                         <input class="u-full-width" type="text" disabled placeholder="account.near" name="accountId" value="${accountId!}">
-                        <input class="button-primary" type="submit" value="Deploy">
+                        <div class="deploy-step create-account">
+                            <input class="button-primary" type="submit" value="Create subaccount">
+                        </div>
+                        <div class="deploy-step deploy-contract">
+                            <input class="button-primary" type="submit" value="Deploy contract">
+                        </div>
+                        <div class="deploy-step edit-config">
+                            <p>Contract deployed! <a href="https://${accountId!}.page/edit">Edit config</a>.</p>
+                        </div>
                     </form>`
             }
         </div>
+        <script>
+            updateUI();
+        </script>
     `;
 }

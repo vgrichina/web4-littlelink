@@ -40,6 +40,10 @@ export function setConfig(config: LinksConfig): void {
     storage.set(LINKS_CONFIG_KEY, config);
 }
 
+export function getConfig(): LinksConfig | null {
+    return storage.get<LinksConfig>(LINKS_CONFIG_KEY);
+}
+
 // Updates current static content URL in smart contract storage
 export function web4_setStaticUrl(url: string): void {
     assertOwner();
@@ -59,7 +63,7 @@ export function web4_get(request: Web4Request): Web4Response {
 
     if (request.path == '/edit') {
         let config = storage.getSome<LinksConfig>(LINKS_CONFIG_KEY);
-        return htmlResponse(littlelink(config, profileEdit(config)));
+        return htmlResponse(littlelink(config, profileEdit(config, request.accountId)));
     }
 
     if (request.path == '/deploy') {

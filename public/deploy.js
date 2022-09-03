@@ -6,27 +6,53 @@ const { base_decode, base_encode } = window.nearApi.utils.serialize;
 const { BrowserLocalStorageKeyStore } = window.nearApi.keyStores;
 const { createAccount, addKey, fullAccessKey, transfer, deployContract, functionCall, signTransaction, Transaction } = window.nearApi.transactions;
 
+function getAccountId() {
+    const accountInput = document.querySelector('input[name=accountId]');
+    const accountId = accountInput.value;
+    return accountId;
+}
+
 function submitDeployForm(event) {
     event.preventDefault();
 
-    const accountInput = event.target.querySelector('input[name=accountId]');
-    const accountId = accountInput.value;
+    const accountId = getAccountId();
     submitDeployFormAsync({ accountId }).catch(console.error);
+}
+
+const NETWORK_ID = 'default';
+const WALLET_URL = 'https://wallet.near.org';
+const FAST_NEAR_URL = 'https://rpc.web4.near.page';
+
+const keyStore = new BrowserLocalStorageKeyStore(window.localStorage, 'deploy');
+
+async function getDeployInfo({ accountId }) {
+    const contractId = `web4.${accountId}`;
+
+    let keyPair = await keyStore.getKey(NETWORK_ID, contractId);
+    if (!keyPair) return {};
+
+    const keyResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}/key/${keyPair.publicKey}`);
+    if (keyResponse.status === 404) {
+        // Acccount exists but doesn't have access key
+        // TODO: Report message to user? Add key through wallet if possible?
+        console.error(`Account ${accountId} exists but doesn't have access key`);
+        return { keyPair };
+    } else if (keyResponse.status !== 200) {
+        throw new Error(`Unexpected status code ${keyResponse.status}`);
+    }
+
+    const configResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}/view/getConfig`);
+    const config = configResponse.ok && await configResponse.json();
+    return { keyPair, keyResponse, config };
 }
 
 async function submitDeployFormAsync({ accountId }) {
     const contractId = `web4.${accountId}`;
-    const NETWORK_ID = 'default';
-    const WALLET_URL = 'https://wallet.near.org';
-    const FAST_NEAR_URL = 'https://rpc.web4.near.page';
-    // TODO: Refactor to use /web4/account call to self when it's setup in prod
-    const contractWasm = Buffer.from(await (await fetch(`${FAST_NEAR_URL}/account/${CONTRACT_NAME}/contract`)).arrayBuffer());
 
-    // Retrieve the key pair from local storage or create a new one
-    const keyStore = new BrowserLocalStorageKeyStore(window.localStorage, 'deploy');
-    let keyPair = await keyStore.getKey(NETWORK_ID, contractId);
+    let { keyPair, keyResponse, config } = await getDeployInfo({ accountId });
 
     if (!keyPair) {
+        // Create new key pair
         keyPair = KeyPair.fromRandom('ed25519');
         await keyStore.setKey(NETWORK_ID, contractId, keyPair);
 
@@ -49,21 +75,15 @@ async function submitDeployFormAsync({ accountId }) {
         return;
     }
 
-    const keyResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}/key/${keyPair.publicKey}`);
-
     if (keyResponse.status === 404) {
-        // Acccount exists but doesn't have access key
-    // TODO: Report message to user? Add key through wallet if possible?
-        throw new Error(`Account ${accountId} exists but doesn't have access key`);
-    }
-
-    if (keyResponse.status !== 200) {
-        throw new Error(`Unexpected status code ${keyResponse.status}`);
+        // TODO: Report message to user? Add key through wallet if possible?
     }
 
     const nonce = parseInt((await keyResponse.json()).nonce) + 1;
     const blockHash = base_decode((await (await fetch(`${FAST_NEAR_URL}/status`)).json()).sync_info.latest_block_hash);
+    // TODO: Refactor to use /web4/account call to self when it's setup in prod
     const staticUrl = await (await fetch(`${FAST_NEAR_URL}/account/${CONTRACT_NAME}/view/web4_getStaticUrl`)).json();
+    const contractWasm = Buffer.from(await (await fetch(`${FAST_NEAR_URL}/account/${CONTRACT_NAME}/contract`)).arrayBuffer());
 
     // Create transaction to deploy contract
     const transaction = new Transaction({
@@ -107,4 +127,19 @@ async function submitDeployFormAsync({ accountId }) {
     });
     const result = await response.json();
     console.log('result', result);
+
+    updateUI();
+}
+
+function updateUI() {
+    getDeployInfo({ accountId: getAccountId() }).then(({ keyPair, keyResponse, config }) => {
+        document.querySelectorAll('.deploy-step').forEach((el) => el.classList.remove('active'));
+        if (!keyPair) {
+            document.querySelector('.deploy-step.create-account').classList.add('active');
+        } else if (!config) {
+            document.querySelector('.deploy-step.deploy-contract').classList.add('active');
+        } else {
+            document.querySelector('.deploy-step.edit-config').classList.add('active');
+        }
+    });
 }
