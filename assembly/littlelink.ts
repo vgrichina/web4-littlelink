@@ -129,21 +129,25 @@ export function links(linkItems: LinkItem[]): string {
     return parts.join('\n');
 }
 
-export function profileEdit(config: LinksConfig): string {
+export function profileEdit(config: LinksConfig, accountId: string | null): string {
     return `
         <div class="container-left">
             <form method="POST" action="/web4/contract/${Context.contractName}/setConfig">
-                <label for="name">Name</label>
-                <input class="u-full-width" type="text" placeholder="John Doe" name="name" value="${config.name}">
+                ${accountId ? `
+                    <label for="name">Name</label>
+                    <input class="u-full-width" type="text" placeholder="John Doe" name="config.name" value="${config.name}">
 
-                <label for="bio">Bio</label>
-                <textarea class="u-full-width" name="bio">${config.bio}</textarea>
+                    <label for="bio">Bio</label>
+                    <textarea class="u-full-width" name="config.bio">${config.bio}</textarea>
 
-                <h2>Links</h2>
+                    <h2>Links</h2>
 
-                ${linksEdit(config.links)}
+                    ${linksEdit(config.links)}
 
-                <input class="button-primary" type="submit" value="Save">
+                    <input class="button-primary" type="submit" value="Save">`
+                    : `
+                    <p><a href="/web4/login">Sign in</a> to edit your profile.</p>`
+                }
             </form>
         </div>
     `;
@@ -154,7 +158,7 @@ function typeOptions(selectedType: string): string {
     let parts: string[] = [];
     for (let i = 0; i < LINK_TYPES.length; i++) {
         const type = LINK_TYPES[i];
-        parts.push(`<option value="twitter" ${type == selectedType ? 'selected' : ''}>${type}</option>`);
+        parts.push(`<option value="${type}" ${type == selectedType ? 'selected' : ''}>${type}</option>`);
     }
     return parts.join('\n');
 }
@@ -168,17 +172,17 @@ export function linksEdit(linkItems: LinkItem[]): string {
             <div class="row">
                 <div class="six columns">
                     <label>Type</label>
-                    <select class="u-full-width" name="links[${i}].type">
+                    <select class="u-full-width" name="config.links[${i}].type">
                         ${typeOptions(link.type)}
                     </select>
                 </div>
                 <div class="six columns">
                     <label>Text</label>
-                    <input class="u-full-width" type="text" placeholder="Twitter" name="links[${i}].text" value="${link.text}">
+                    <input class="u-full-width" type="text" placeholder="Twitter" name="config.links[${i}].text" value="${link.text}">
                 </div>
             </div>
             <label>URL</label>
-            <input class="u-full-width" type="url" placeholder="http://twitter.com" name="links[${i}].href" value="${link.href}">
+            <input class="u-full-width" type="url" placeholder="http://twitter.com" name="config.links[${i}].href" value="${link.href}">
         `);
     }
     return parts.join('\n');
