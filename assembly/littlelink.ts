@@ -85,7 +85,10 @@ export function littlelink(config: LinksConfig, inner: string): string {
         ${inner}
 
         <br>
-        <p>Build your own using <a href="https://github.com/vgrichina/web4-littlelink/" target="_blank" rel="noopener">web4-littlelink</a>.</p>
+        <p>
+            Build your own page <a href="/deploy">here</a>.
+            <br>Based on <a href="https://github.com/vgrichina/web4-littlelink/" target="_blank" rel="noopener">web4-littlelink</a>.
+        </p>
     `);
 }
 
