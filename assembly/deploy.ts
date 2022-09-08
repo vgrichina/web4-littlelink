@@ -25,7 +25,7 @@ export function deployView(accountId: string | null): string {
         </style>
         <div class="container-left">
             <h1>Setup your own</h1>
-            ${!accountId 
+            ${!accountId || Context.contractName == `web4.${accountId!}`
                 ? ` <p><a href="/web4/login">Login</a> with your <code>.near</code> account to deploy your own LittleLink profile page.</p>`
                 : ` <form method="POST" onsubmit="submitDeployForm(event)">
                         <label for="accountId">Current account</label>
