@@ -63,7 +63,9 @@ export function web4_get(request: Web4Request): Web4Response {
 
     if (request.path == '/edit') {
         let config = storage.getSome<LinksConfig>(LINKS_CONFIG_KEY);
-        return htmlResponse(littlelink(config, profileEdit(config, request.accountId)));
+        return htmlResponse(skeleton(`
+            <title>${context.contractName} – Edit profile</title>
+        `, profileEdit(config, request.accountId)));
     }
 
     if (request.path == '/deploy') {
