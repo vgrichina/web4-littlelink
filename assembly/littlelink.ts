@@ -43,7 +43,7 @@ export function skeleton(head: string, inner: string): string {
          Light:  css/skeleton-light.css
          Dark:   css/skeleton-dark.css
   -->
-  <link rel="stylesheet" href="css/skeleton-auto.css">
+  <link rel="stylesheet" href="css/skeleton-light.css">
 
   <link rel="stylesheet" href="css/brands.css">
 
