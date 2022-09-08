@@ -116,7 +116,7 @@ function linkButton(link: LinkItem): string {
     }
     return `
         <a class="button button-${buttonClass}" href="${link.href}" target="_blank" rel="noopener">
-            <img class="icon" src="images/icons/${link.type}.svg">${link.text}</a>
+            <img class="icon" src="images/icons/${link.type}.svg">${link.text.trim() != '' ? link.text : link.type}</a>
         <br>
     `;
 }
@@ -124,7 +124,9 @@ function linkButton(link: LinkItem): string {
 export function links(linkItems: LinkItem[]): string {
     let parts: string[] = [];
     for (let i = 0; i < linkItems.length; i++) {
-        parts.push(linkButton(linkItems[i]));
+        if (linkItems[i].href.trim() != '') {
+            parts.push(linkButton(linkItems[i]));
+        }
     }
     return parts.join('\n');
 }
