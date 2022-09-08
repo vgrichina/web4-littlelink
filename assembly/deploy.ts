@@ -28,16 +28,24 @@ export function deployView(accountId: string | null): string {
             ${!accountId 
                 ? ` <p><a href="/web4/login">Login</a> with your <code>.near</code> account to deploy your own LittleLink profile page.</p>`
                 : ` <form method="POST" onsubmit="submitDeployForm(event)">
-                        <label for="accountId">Account ID</label>
+                        <label for="accountId">Current account</label>
                         <input class="u-full-width" type="text" disabled placeholder="account.near" name="accountId" value="${accountId!}">
                         <div class="deploy-step create-account">
-                            <input class="button-primary" type="submit" value="Create subaccount">
+                            <p>Account <code>web4.${accountId!}</code> doesn't exist yet. Please create it to proceed.</p>
+                            <input class="button-primary" type="submit" value="Create web4 account">
+                        </div>
+                        <div class="deploy-step missing-access-key">
+                            <p>Account <code>web4.${accountId!}</code> is missing access key for this app. Please add access key to continue.</p>
                         </div>
                         <div class="deploy-step deploy-contract">
+                            <p><code>web4.${accountId!}</code> account was created succesfully.</b>
+                            <p>Please deploy contract immediately to make sure <code>${accountId!}</code> keeps access to it.</p>
                             <input class="button-primary" type="submit" value="Deploy contract">
                         </div>
                         <div class="deploy-step edit-config">
-                            <p>Contract deployed! <a href="https://${accountId!}.page/edit">Edit config</a>.</p>
+                            <p>Contract deployed to <code>web4.${accountId!}</code>.
+                            <a href="https://${accountId!}.page/">View in browser</a>.</p>
+                            <a href="https://${accountId!}.page/edit">Edit config</a>.</p>
                         </div>
                     </form>`
             }

@@ -28,34 +28,40 @@ const keyStore = new BrowserLocalStorageKeyStore(window.localStorage, 'deploy');
 async function getDeployInfo({ accountId }) {
     const contractId = `web4.${accountId}`;
 
+    const accountResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}`);
+    if (!accountResponse.ok) return { };
+    const account = await accountResponse.json();
+
     let keyPair = await keyStore.getKey(NETWORK_ID, contractId);
-    if (!keyPair) return {};
+    if (!keyPair) return { account };
 
     const keyResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}/key/${keyPair.publicKey}`);
     if (keyResponse.status === 404) {
         // Acccount exists but doesn't have access key
         // TODO: Report message to user? Add key through wallet if possible?
         console.error(`Account ${accountId} exists but doesn't have access key`);
-        return { keyPair };
+        return { account, keyPair, keyResponse };
     } else if (keyResponse.status !== 200) {
         throw new Error(`Unexpected status code ${keyResponse.status}`);
     }
 
     const configResponse = await fetch(`${FAST_NEAR_URL}/account/${contractId}/view/getConfig`);
     const config = configResponse.ok && await configResponse.json();
-    return { keyPair, keyResponse, config };
+    return { account, keyPair, keyResponse, config };
 }
 
 async function submitDeployFormAsync({ accountId }) {
     const contractId = `web4.${accountId}`;
 
-    let { keyPair, keyResponse, config } = await getDeployInfo({ accountId });
+    let { account, keyPair, keyResponse, config } = await getDeployInfo({ accountId });
 
     if (!keyPair) {
         // Create new key pair
         keyPair = KeyPair.fromRandom('ed25519');
         await keyStore.setKey(NETWORK_ID, contractId, keyPair);
+    }
 
+    if (!account) {
         // Create account with necessary access key
         window.location = signTransactionsURL({ walletUrl: WALLET_URL, transactions: [
             new Transaction({
@@ -77,6 +83,7 @@ async function submitDeployFormAsync({ accountId }) {
 
     if (keyResponse.status === 404) {
         // TODO: Report message to user? Add key through wallet if possible?
+        throw Error(`Account ${accountId} exists but doesn't have necessary access key`);
     }
 
     const nonce = parseInt((await keyResponse.json()).nonce) + 1;
@@ -132,10 +139,12 @@ async function submitDeployFormAsync({ accountId }) {
 }
 
 function updateUI() {
-    getDeployInfo({ accountId: getAccountId() }).then(({ keyPair, keyResponse, config }) => {
+    getDeployInfo({ accountId: getAccountId() }).then(({ account, keyPair, config }) => {
         document.querySelectorAll('.deploy-step').forEach((el) => el.classList.remove('active'));
-        if (!keyPair) {
+        if (!account) {
             document.querySelector('.deploy-step.create-account').classList.add('active');
+        } else if (!keyPair) {
+            document.querySelector('.deploy-step.missing-access-key').classList.add('active');
         } else if (!config) {
             document.querySelector('.deploy-step.deploy-contract').classList.add('active');
         } else {
