@@ -146,7 +146,7 @@ export function profileEdit(config: LinksConfig, accountId: string | null): stri
 
                     <input class="button-primary" type="submit" value="Save">`
                     : `
-                    <p><a href="/web4/login">Sign in</a> to edit your profile.</p>`
+                    <p><a href="/web4/login?web4_contract_id=${Context.contractName}">Sign in</a> to edit your profile.</p>`
                 }
             </form>
         </div>
