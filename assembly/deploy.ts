@@ -44,8 +44,11 @@ export function deployView(accountId: string | null): string {
                         </div>
                         <div class="deploy-step edit-config">
                             <p>Contract deployed to <code>web4.${accountId!}</code>.
-                            <a href="https://${accountId!}.page/">View in browser</a>.</p>
-                            <a href="https://${accountId!}.page/edit">Edit config</a>.</p>
+                                <br>
+                                <a href="https://${accountId!}.page/">View in browser</a>.
+                                <a href="https://${accountId!}.page/edit">Edit config</a>.
+                            </p>
+                            <p><a href="/web4/login">Login</a> with your <code>.near</code> account to deploy another profile page.</p>
                         </div>
                     </form>`
             }
