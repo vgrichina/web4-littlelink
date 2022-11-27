@@ -135,24 +135,29 @@ export function links(linkItems: LinkItem[]): string {
 }
 
 export function profileEdit(config: LinksConfig, accountId: string | null): string {
+    if (!accountId) {
+        return `
+            <div class="container-left">
+                <p><a href="/web4/login?web4_contract_id=${Context.contractName}">Sign in</a> to edit your profile.</p>
+            </div>
+        `
+    }
+
     return `
         <div class="container-left">
+            <p>Logged in as <b>${accountId!}</b>. <a href="/web4/logout?web4_callback_url=/">Log out</a>.</p>
             <form method="POST" action="/web4/contract/${Context.contractName}/setConfig">
-                ${accountId ? `
-                    <label for="name">Name</label>
-                    <input class="u-full-width" type="text" placeholder="John Doe" name="config.name" value="${config.name}">
+                <label for="name">Name</label>
+                <input class="u-full-width" type="text" placeholder="John Doe" name="config.name" value="${config.name}">
 
-                    <label for="bio">Bio</label>
-                    <textarea class="u-full-width" name="config.bio">${config.bio}</textarea>
+                <label for="bio">Bio</label>
+                <textarea class="u-full-width" name="config.bio">${config.bio}</textarea>
 
-                    <h2>Links</h2>
+                <h2>Links</h2>
 
-                    ${linksEdit(config.links)}
+                ${linksEdit(config.links)}
 
-                    <input class="button-primary" type="submit" value="Save">`
-                    : `
-                    <p><a href="/web4/login?web4_contract_id=${Context.contractName}">Sign in</a> to edit your profile.</p>`
-                }
+                <input class="button-primary" type="submit" value="Save">
             </form>
         </div>
     `;
@@ -169,10 +174,12 @@ function typeOptions(selectedType: string): string {
 }
 
 export function linksEdit(linkItems: LinkItem[]): string {
+    let items = linkItems.slice(0);
+    // Add one empty item to allow user adding more links
+    items.push({ type: 'web', text: '', href: '' });
     let parts: string[] = [];
-    for (let i = 0; i < linkItems.length; i++) {
-        let link = linkItems[i];
-        // TODO: Have array of types
+    for (let i = 0; i < items.length; i++) {
+        let link = items[i];
         parts.push(`
             <div class="row">
                 <div class="six columns">

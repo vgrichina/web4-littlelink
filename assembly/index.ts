@@ -37,6 +37,9 @@ export function addAccessKey(publicKey: Uint8Array): ContractPromiseBatch {
 export function setConfig(config: LinksConfig): void {
     assertOwner();
 
+    // Filter out empty links from config
+    config.links = config.links.filter((link) => link.href.trim().length > 0 || link.text.trim().length > 0);
+
     storage.set(LINKS_CONFIG_KEY, config);
 }
 
