@@ -158,7 +158,7 @@ export function profileEdit(config: LinksConfig, accountId: string | null): stri
     `;
 }
 
-const LINK_TYPES = ['twitter', 'github'];
+const LINK_TYPES = ['appstore', 'blog', 'discord', 'email', 'facebook', 'figma', 'github', 'gitlab', 'instagram', 'kickstarter', 'ko-fi', 'linkedin', 'medium', 'mastodon', 'messenger', 'notion', 'onlyfans', 'patreon', 'pinterest', 'playstore', 'producthunt', 'reddit', 'signal', 'spotify', 'steam', 'telegram', 'tiktok', 'twitch', 'twitter', 'vimeo', 'web', 'whatsapp', 'youtube'];
 function typeOptions(selectedType: string): string {
     let parts: string[] = [];
     for (let i = 0; i < LINK_TYPES.length; i++) {
