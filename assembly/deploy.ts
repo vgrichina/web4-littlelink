@@ -8,8 +8,7 @@ import { Context } from "near-sdk-as";
 // If user gives account.near, contract gets deployed at web4.account.near
 export function deployView(accountId: string | null): string {
     return `
-        <!-- near-api-js from IPFS -->
-        <script src="https://ipfs.web4.near.page/ipfs/bafybeihkxymp52mq4j5nzasfuz2dwzpy6ihoigeu6acxhjlhgiwtkn6674"></script>
+        <script src="./near-api-js.js"></script>
         <script src="./web-wallet-api.js"></script>
         <script>
             const CONTRACT_NAME = '${Context.contractName}';
